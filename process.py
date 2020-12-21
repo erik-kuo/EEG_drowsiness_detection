@@ -2,6 +2,7 @@ libpath = 'physionet.org/files/slpdb/1.0.0/'
 
 import wfdb
 import matplotlib.pyplot as plt
+import numpy as np
 import glob
 
 sample_time = 30
