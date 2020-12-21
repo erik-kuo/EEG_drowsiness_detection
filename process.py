@@ -10,12 +10,13 @@ fs = 250
 
 PSD_W = []
 PSD_1 = []
-f = []
+freqs = []
 
 def plot_segment(filename, eeg, stage, step):
     plt.figure()
     _psd, f = plt.psd(eeg[step*fs*30:(step+1)*fs*30], Fs=fs, return_line=False)
     PSD_W.append(_psd) if stage == 'W' else PSD_1.append(_psd)
+    freqs.append(f)
     # plt.axis([0, 140, -90, -30])
     # plt.suptitle('PSD of ' + filename + ' using pyplot.psd()', fontweight ="bold") 
     # plt.savefig('1220/PSD_' + filename + '_' + stage + '_' + str(step) + '.png')
@@ -50,16 +51,18 @@ dat_files=glob.glob(libpath + '*.dat')
 
 for file in dat_files:
     print(file)
-    if 'slp32' in file: break
+    if 'slp01b' in file: break
     plot_file(file[len(libpath):-4])
 
 PSD_W = np.array(PSD_W)
 PSD_1 = np.array(PSD_1)
 
+print(freqs[0])
+
 plt.figure()
-plt.plot(f, np.mean(PSD_W, axis=0))
-plt.plot(f, np.mean(PSD_1, axis=0))
+plt.plot(freqs[0], 10*np.log10(np.mean(PSD_W, axis=0)))
+plt.plot(freqs[0], 10*np.log10(np.mean(PSD_1, axis=0)))
 plt.axis([0, 140, -90, -30])
-plt.suptitle('PSD of ' + filename + ' using pyplot.psd()', fontweight ="bold") 
+plt.suptitle('PSD using pyplot.psd()', fontweight ="bold") 
 plt.show()
 
